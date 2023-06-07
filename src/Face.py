@@ -20,9 +20,8 @@ class Face:
             source_faces.append(Face.mtcnn.detect_faces(img))
         return source_faces
 
-    def detect_from_person_pos(frame, person_pos):
-        x_min, y_min, x_max, y_max = map(int, person_pos)
-        face_results = Face.mtcnn.detect_faces(frame[y_min:y_max, x_min:x_max])
+    def detect_from_frame(frame):
+        face_results = Face.mtcnn.detect_faces(frame)
         return face_results
     
     def is_video_face_in_source(video_face, source_faces):

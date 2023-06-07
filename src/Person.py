@@ -25,7 +25,7 @@ class Person:
                 cv2.putText(frame, 'person', (int(row['xmin']), int(row['ymin'])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
 
 
-    def get_pos(self, p_row):
+    def get_pos(p_row):
         return [p_row['xmin'], p_row['ymin'], p_row['xmax'], p_row['ymax']]
     
     def get_detected_persons(self):
@@ -33,3 +33,10 @@ class Person:
 
     def clear_detected_persons(self):
         self.detected_persons = []
+
+    def is_in_person(person_pos, target_pos):
+        px_min, py_min, px_max, py_max = map(int, person_pos)
+        tx_min, ty_min, tx_max, ty_max = map(int, target_pos)
+        if px_min < tx_min and px_max > tx_max and py_min < ty_min and py_max > ty_max:
+            return True
+        return False
