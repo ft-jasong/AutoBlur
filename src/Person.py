@@ -5,12 +5,12 @@ CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 PERSON_MODEL_DIR = os.path.join(CUR_DIR, '../checkpoint/person_best.pt')
 
 class Person:
+    person_model = torch.hub.load('ultralytics/yolov5', 'custom', path=PERSON_MODEL_DIR)
+    person_model.conf = 0.5
+    person_model.iou = 0.5
+    person_model.classes = [0]
+    person_model.names = ['person']
     def __init__(self):
-        self.person_model = torch.hub.load('ultralytics/yolov5', 'custom', path=PERSON_MODEL_DIR)
-        self.person_model.conf = 0.5
-        self.person_model.iou = 0.5
-        self.person_model.classes = [0]
-        self.person_model.names = ['person']
         self.detected_persons = []
 
     def detect(self, frame):
