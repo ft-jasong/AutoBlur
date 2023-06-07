@@ -20,12 +20,11 @@ class Person:
             if row['confidence'] > 0.5:
                 self.detected_persons.append(row)
 
-    def get_pos(self, index):
-        row = self.detected_persons[index]
-        return int(row['xmin']), int(row['ymin']), int(row['xmax']), int(row['ymax'])
+    def get_pos(self, p_row):
+        return [p_row['xmin'], p_row['ymin'], p_row['xmax'], p_row['ymax']]
     
     def get_detected_persons(self):
         return self.detected_persons
-    
+
     def clear_detected_persons(self):
         self.detected_persons = []
