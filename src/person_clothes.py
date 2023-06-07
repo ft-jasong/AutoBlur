@@ -1,12 +1,12 @@
+import os
 import cv2
 import torch
 import matplotlib.pyplot as plt
-import os
 from Person import Person
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 PERSON_MODEL_PATH = os.path.join(CUR_DIR, '../checkpoint/person_best.pt')
-CLOTHES_MODEL_PATH = os.path.join(CUR_DIR, '../checkpoint/clothes_best.pt')
+CLOTHES_MODEL_PATH = os.path.join(CUR_DIR, '../checkpoint/new_best.pt')
 
 person_model = torch.hub.load('ultralytics/yolov5', 'custom', path=PERSON_MODEL_PATH)
 person_model.conf = 0.5
