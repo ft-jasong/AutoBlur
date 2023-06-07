@@ -1,23 +1,42 @@
+import os
+import torch
+import cv2
+
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+PERSON_MODEL_DIR = os.path.join(CUR_DIR, '../checkpoint/person_best.pt')
+
 class Person:
-    def __init__(self, pos):
-        self.face = None
-        self.pos = pos
-        self.clothes = []
+    person_model = torch.hub.load('ultralytics/yolov5', 'custom', path=PERSON_MODEL_DIR)
+    person_model.conf = 0.5
+    person_model.iou = 0.5
+    person_model.classes = [0]
+    person_model.names = ['person']
+    def __init__(self):
+        self.detected_persons = []
 
-    def getPos(self):
-        return self.pos[0], self.pos[1], self.pos[2], self.pos[3]
+    def detect(self, frame):
+        person_results = self.person_model(frame)
+        person_results = person_results.pandas().xyxy[0][person_results.pandas().xyxy[0]['name'] == 'person']
+        for _, row in person_results.iterrows():
+            if row['confidence'] > 0.5:
+                self.detected_persons.append(row)
+                # draw person bounding box in purple rgb
+                cv2.rectangle(frame, (int(row['xmin']), int(row['ymin'])), (int(row['xmax']), int(row['ymax'])), (255, 0, 255), 2)
+                cv2.putText(frame, 'person', (int(row['xmin']), int(row['ymin'])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
 
-    def addClothes(self, clothes_name):
-        self.clothes.append(clothes_name)
+
+    def get_pos(p_row):
+        return [p_row['xmin'], p_row['ymin'], p_row['xmax'], p_row['ymax']]
     
-    def isInside(self, clothes_pos):
-        if self.pos[0] < clothes_pos[0] and self.pos[1] < clothes_pos[1] and self.pos[2] > clothes_pos[2] and self.pos[3] > clothes_pos[3]:
+    def get_detected_persons(self):
+        return self.detected_persons
+
+    def clear_detected_persons(self):
+        self.detected_persons = []
+
+    def is_in_person(person_pos, target_pos):
+        px_min, py_min, px_max, py_max = map(int, person_pos)
+        tx_min, ty_min, tx_max, ty_max = map(int, target_pos)
+        if px_min < tx_min and px_max > tx_max and py_min < ty_min and py_max > ty_max:
             return True
         return False
-
-    def findClothes(self, clothes_name):
-        for c in self.clothes:
-            if c == clothes_name:
-                return True
-        return False
-    
