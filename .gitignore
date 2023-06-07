@@ -3,3 +3,5 @@
 *.python-version
 *yolov5
 *__pycache__
+*data*
+*face_recognition*

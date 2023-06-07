@@ -1,5 +1,6 @@
 import os
 import torch
+import cv2
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 PERSON_MODEL_DIR = os.path.join(CUR_DIR, '../checkpoint/person_best.pt')
@@ -19,6 +20,10 @@ class Person:
         for _, row in person_results.iterrows():
             if row['confidence'] > 0.5:
                 self.detected_persons.append(row)
+                # draw person bounding box in purple rgb
+                cv2.rectangle(frame, (int(row['xmin']), int(row['ymin'])), (int(row['xmax']), int(row['ymax'])), (255, 0, 255), 2)
+                cv2.putText(frame, 'person', (int(row['xmin']), int(row['ymin'])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+
 
     def get_pos(self, p_row):
         return [p_row['xmin'], p_row['ymin'], p_row['xmax'], p_row['ymax']]
