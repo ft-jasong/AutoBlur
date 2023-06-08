@@ -1,5 +1,0 @@
-names:
-  - Person
-nc: 1
-train: /content/datasets/Person-1/train/images
-val: /content/datasets/Person-1/valid/images
