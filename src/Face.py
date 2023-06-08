@@ -7,15 +7,15 @@ from scipy.spatial import distance
 from mtcnn import MTCNN
 from FileUtil import get_image_paths
 
-SRC_IMG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../asset/images/')
+# SRC_IMG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../asset/images/')
 
 class Face:
     mtcnn = MTCNN()
 
-    def get_source_faces():
+    def get_source_faces(src_img_path):
         source_faces = []
-        img_paths = get_image_paths(SRC_IMG_PATH)
-        for img_path in img_paths:
+        # img_paths = get_image_paths(src_img_path)
+        for img_path in src_img_path:
             img = cv2.imread(img_path)
             source_faces.append(Face.mtcnn.detect_faces(img))
         return source_faces

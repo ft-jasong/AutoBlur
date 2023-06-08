@@ -50,10 +50,10 @@ def draw_rect_face_in_frame(frame, face_pos, msg):
     cv2.rectangle(frame, (x, y), (x + width, y + height), color, 2)
     cv2.putText(frame, msg, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-def edit_video(video_path, input_clothes_type):
+def edit_video(video_path, src_image_paths, input_clothes_type):
     # 기본 변수들 설정
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    source_faces = Face.get_source_faces()
+    source_faces = Face.get_source_faces(src_image_paths)
     # video Init 설정
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
